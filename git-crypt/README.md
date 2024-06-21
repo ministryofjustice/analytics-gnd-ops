@@ -54,7 +54,7 @@ What's going on: When you "add their GPG key", it will take the repo's root key,
 
 2. To get a person's key onto your GPG keyring, you need to download their key first. First see if it is added to their GitHub profile e.g.:
 
-       GITHUB_USER=davidread curl -s https://api.github.com/users/$GITHUB_USER/gpg_keys | jq -r '.[0].raw_key'
+       GITHUB_USER=davidread; curl -s https://api.github.com/users/$GITHUB_USER/gpg_keys | jq -r '.[0].raw_key'
 
    Otherwise it might be in our [repo of public keys](https://github.com/ministryofjustice/analytical-platform-public-keys), although we're trying to use GitHub as the directory now.
 
@@ -62,7 +62,8 @@ What's going on: When you "add their GPG key", it will take the repo's root key,
 
 3. Import the person's public key onto your GPG keyring:
 
-       gpg --import /tmp/alice.asc
+       GITHUB_USER=<GitHub_User_ID>; curl -s https://api.github.com/users/$GITHUB_USER/gpg_keys | jq -r '.[0].raw_key' > /tmp/$GITHUB_USER.asc 
+       gpg --import /tmp/$GITHUB_USER.asc
 
 4. Tell GPG that you trust the key and sign it:
 
